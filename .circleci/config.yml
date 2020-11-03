@@ -82,7 +82,8 @@ jobs:
           name: Test Frontend
           command: |
             cd frontend
-            npm test
+            npm add --dev jest-junit
+            npm run test --reporters=jest-junit
                 
   test-backend:
     docker:
@@ -99,7 +100,9 @@ jobs:
           name: Test Backend
           command: |
             cd backend
-            npm test
+            npm add --dev jest-junit
+            npm run test --reporters=jest-junit
+      
             
   scan-frontend:
     docker:
