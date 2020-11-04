@@ -323,11 +323,6 @@ jobs:
               then
                 # your code here
               fi
-
-        - slack/notify:
-            channel: circleci
-            event: fail
-            template: basic_fail_1
             
 
 workflows:
