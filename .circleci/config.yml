@@ -32,9 +32,6 @@ commands:
               exit 1
             fi
 
-orbs:
-  slack: circleci/slack@4.1.1
-
 jobs:
   build-frontend:
     docker:
@@ -53,10 +50,6 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-build
 
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1
 
   build-backend:
     docker:
@@ -75,10 +68,6 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
       
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1
 
   test-frontend:
     docker:
@@ -98,10 +87,6 @@ jobs:
             npm add --dev jest-junit
             npm run test --reporters=jest-junit
     
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1
                 
   test-backend:
     docker:
@@ -121,10 +106,6 @@ jobs:
             npm add --dev jest-junit
             npm run test --reporters=jest-junit
       
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1
       
             
   scan-frontend:
@@ -144,10 +125,6 @@ jobs:
             cd frontend
             npm audit --audit-level=critical
       
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1
 
   scan-backend:
     docker:
@@ -166,10 +143,6 @@ jobs:
             cd backend
             npm audit fix --audit-level=critical --force
       
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1
 
   deploy-infrastructure:
     docker:
@@ -205,11 +178,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure 
-
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1     
+     
 
   configure-infrastructure:
     docker:
@@ -230,11 +199,7 @@ jobs:
             # Your code here
             exit 1
       # Here's where you will add some code to rollback on failure  
-
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1    
+    
 
   run-migrations:
     docker:
@@ -253,11 +218,7 @@ jobs:
             # Your code here
             exit 1
      # Here's where you will add some code to rollback on failure    
-
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1  
+  
 
   deploy-frontend:
     docker:
@@ -280,11 +241,7 @@ jobs:
           command: |
             # your code heresdsss
       # Here's where you will add some code to rollback on failure     
-
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1 
+ 
                     
   deploy-backend:
     docker:
@@ -304,10 +261,6 @@ jobs:
             # your code here
       # Here's where you will add some code to rollback on failure  
 
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1
 
   smoke-test:
     docker:
@@ -333,10 +286,6 @@ jobs:
             # your code here
       # Here's where you will add some code to rollback on failure  
 
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1
 
   cloudfront-update:
     docker:
@@ -354,10 +303,6 @@ jobs:
             # your code here
       # Here's where you will add some code to rollback on failure  
 
-      - slack/notify:
-          channel: circleci
-          event: fail
-          template: basic_fail_1
 
   cleanup:
       docker:
