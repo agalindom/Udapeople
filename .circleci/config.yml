@@ -31,7 +31,10 @@ commands:
             #  Add revert code here. You can find this in the Getting Started section.
               exit 1
             fi
-            
+
+orbs:
+  slack: circleci/slack@4.1.1
+
 jobs:
   build-frontend:
     docker:
@@ -50,6 +53,11 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-build
 
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1
+
   build-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -66,6 +74,11 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+      
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1
 
   test-frontend:
     docker:
@@ -84,6 +97,11 @@ jobs:
             cd frontend
             npm add --dev jest-junit
             npm run test --reporters=jest-junit
+    
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1
                 
   test-backend:
     docker:
@@ -103,6 +121,11 @@ jobs:
             npm add --dev jest-junit
             npm run test --reporters=jest-junit
       
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1
+      
             
   scan-frontend:
     docker:
@@ -120,6 +143,11 @@ jobs:
           command: |
             cd frontend
             npm audit --audit-level=critical
+      
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1
 
   scan-backend:
     docker:
@@ -137,6 +165,11 @@ jobs:
           command: |
             cd backend
             npm audit fix --audit-level=critical --force
+      
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1
 
   deploy-infrastructure:
     docker:
@@ -171,7 +204,12 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      # Here's where you will add some code to rollback on failure      
+      # Here's where you will add some code to rollback on failure 
+
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1     
 
   configure-infrastructure:
     docker:
@@ -191,7 +229,12 @@ jobs:
           command: |
             # Your code here
             exit 1
-      # Here's where you will add some code to rollback on failure      
+      # Here's where you will add some code to rollback on failure  
+
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1    
 
   run-migrations:
     docker:
@@ -209,7 +252,12 @@ jobs:
           command: |
             # Your code here
             exit 1
-     # Here's where you will add some code to rollback on failure      
+     # Here's where you will add some code to rollback on failure    
+
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1  
 
   deploy-frontend:
     docker:
@@ -231,7 +279,12 @@ jobs:
           name: Deploy frontend objects
           command: |
             # your code here
-      # Here's where you will add some code to rollback on failure      
+      # Here's where you will add some code to rollback on failure     
+
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1 
                     
   deploy-backend:
     docker:
@@ -250,6 +303,11 @@ jobs:
           command: |
             # your code here
       # Here's where you will add some code to rollback on failure  
+
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1
 
   smoke-test:
     docker:
@@ -275,6 +333,11 @@ jobs:
             # your code here
       # Here's where you will add some code to rollback on failure  
 
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1
+
   cloudfront-update:
     docker:
       # Docker image here that supports AWS CLI
@@ -290,6 +353,11 @@ jobs:
           command: |
             # your code here
       # Here's where you will add some code to rollback on failure  
+
+      - slack/notify:
+          channel: circleci
+          event: fail
+          template: basic_fail_1
 
   cleanup:
       docker:
@@ -310,6 +378,11 @@ jobs:
               then
                 # your code here
               fi
+
+        - slack/notify:
+            channel: circleci
+            event: fail
+            template: basic_fail_1
             
 
 workflows:
