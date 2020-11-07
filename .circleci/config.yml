@@ -152,7 +152,6 @@ jobs:
       # Checkout code from git
       - run:
           command: |
-            pwd
             ls
       - run:
           name: Ensure back-end infrastructure exists
