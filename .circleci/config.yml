@@ -151,7 +151,9 @@ jobs:
     steps:
       # Checkout code from git
       - run:
-          command: pwd
+          command: |
+            pwd
+            ls
       - run:
           name: Ensure back-end infrastructure exists
           command: |
