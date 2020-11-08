@@ -152,9 +152,6 @@ jobs:
       # Checkout code from git
       - checkout
       - run:
-          command: |
-            pwd
-      - run:
           name: Ensure back-end infrastructure exists
           command: |
             aws cloudformation deploy \
@@ -195,18 +192,23 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
+      - checkout
       # Add ssh keys with fingerprint
+      - add_ssh_keys: 
+          fingerprints: 
+            - 38:3e:0d:0d:47:48:fc:f2:ea:74:c4:37:f3:19:9a:59
       # attach workspace
+      - attach_workspace:
+          at: ./
       - run:
           name: Install dependencies
           command: |
-            # Your code here
-            exit 1
+            apk add --update ansible
       - run:
           name: Configure server
           command: |
-            # Your code here
-            exit 1
+            cd .circleci/ansible 
+            ansible-playbook configure-server.yml -i inventory.txt
       # Here's where you will add some code to rollback on failure  
     
 
