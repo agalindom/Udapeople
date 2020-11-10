@@ -151,6 +151,10 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - run: 
+          command: |
+            yum -y install tar gzip
+
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -181,7 +185,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory
       
       # Here's where you will add some code to rollback on failure 
      
