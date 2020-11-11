@@ -34,26 +34,39 @@
 #   shell: |
 #     apt install -y rsync
 
-- name: copy to remote server
-  become: yes
-  synchronize:
-    src: backend
-    dest: ~/
+# - name: copy to remote server
+#   become: yes
+#   synchronize:
+#     src: backend
+#     dest: ~/
 
-- name: make env file
-  become: yes
-  shell: |
-    cd backend
-    cp env .env 
-    rm env  
-    cat .env
-  register: env_output
+# - name: make env file
+#   become: yes
+#   shell: |
+#     cd backend
+#     cp env .env 
+#     rm env  
+#     cat .env
+#   register: env_output
     
-- name: build backend application
-  become: yes
-  shell: |
-    cd backend/
-    npm i 
-    npm run build
-  register: copy_output
-    
+# - name: build backend application
+#   become: yes
+#   shell: |
+#     cd backend/
+#     npm i 
+#     npm run build
+#   register: copy_output
+- name: Makedir
+  file:
+    path: /home/ubuntu/backend
+    state: directory
+
+- name: "Copy build"
+  unarchive:
+    src: /tmp/saveme/backend.tar.gz
+    dest: /home/ubuntu/backend/
+
+- name: "Copy package.json"
+  copy:
+    src: /tmp/saveme/package.json
+    dest: /home/ubuntu/backend/
