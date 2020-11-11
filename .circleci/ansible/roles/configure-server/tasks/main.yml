@@ -1,0 +1,59 @@
+---
+- name: "update apt packages."
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: "upgrade packages"
+  become: yes
+  apt:
+    upgrade_cache: yes
+
+- name: remove dependencies that are no longer required
+  become: yes
+  apt:
+    autoremove: yes
+
+- name: "install dependencies."
+  become: yes
+  apt:
+    name: ["python","nodejs", "npm", "git"]
+    state: latest
+    update_cache: yes
+
+- name: "install pm2"
+  become: yes
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+
+- name: install rsync
+  become: yes
+  shell: |
+    apt install -y rsync
+
+- name: copy to remote server
+  become: yes
+  synchronize:
+    src: backend
+    dest: ~/
+
+- name: make env file
+  become: yes
+  shell: |
+    cd backend
+    cp env .env 
+    rm env  
+    cat .env
+  register: env_output
+    
+- name: build backend application
+  become: yes
+  shell: |
+    cd backend/
+    npm i 
+    npm run build
+  register: copy_output
+    
