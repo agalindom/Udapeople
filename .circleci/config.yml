@@ -237,7 +237,7 @@ jobs:
       - run: apk update && apk add --upgrade rsync openssh 
       - run: 
           name: Configure server using ansible playbook
-          command: ansible-playbook -i inventory.txt .circleci/ansible/configure_serrver.yml
+          command: ansible-playbook -i inventory.txt .circleci/ansible/configure_server.yml
 
       
       
