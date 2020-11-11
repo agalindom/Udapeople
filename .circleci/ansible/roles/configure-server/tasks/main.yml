@@ -29,10 +29,10 @@
     production: yes
     state: present
 
-- name: install rsync
-  become: yes
-  shell: |
-    apt install -y rsync
+# - name: install rsync
+#   become: yes
+#   shell: |
+#     apt install -y rsync
 
 - name: copy to remote server
   become: yes

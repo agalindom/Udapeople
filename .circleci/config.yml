@@ -250,16 +250,41 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       - run:
-          name: Run migrations
+          name: Write env vars
           command: |
-            # Your code here
-            exit 1
+            cd backend
+            echo "ENVIRONMENT=production" > env
+            echo "NODE_ENV=production" >> env
+            echo "TYPEORM_CONNECTION=$TYPEORM_CONNECTION" >> env
+            echo "TYPEORM_ENTITIES=$TYPEORM_ENTITIES" >> env
+            echo "TYPEORM_HOST=$TYPEORM_HOST" >> env
+            echo "TYPEORM_PORT=$TYPEORM_PORT" >> env
+            echo "TYPEORM_USERNAME=$TYPEORM_USERNAME" >> env
+            echo "TYPEORM_PASSWORD=$TYPEORM_PASSWORD" >> env
+            echo "TYPEORM_DATABASE=$TYPEORM_DATABASE" >> env
+          
+      - run:
+          name: run npm on backend
+          command: |
+            cd backend
+            npm i
+
+      - run:
+          name: Run migration
+          command: |
+            cd backend && npm install
+            npm run migrations
+            echo [has been executed successfully] >> migration_succeed
       - run:
           name: Send migration results to memstash
           command: |
-            # Your code here
-            exit 1
+            if test -f "$FILE"; THEN
+              curl -H "Content-Type: text/plain" -H "token: 700d57b3-6a8a-4ac5-8479-86460f9a080d" --request PUT --data "true" https://api.memstash.io/values/${CIRCLE_WORKFLOW_ID:0:7}
+              cat migration_succeed
+            fi
+
      # Here's where you will add some code to rollback on failure    
   
 
